@@ -1,0 +1,5 @@
+# OSX filesystem journaling files.
+.DS_Store
+
+# IntelliJ project folder.
+.idea

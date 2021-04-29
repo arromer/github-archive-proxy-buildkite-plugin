@@ -1,0 +1,12 @@
+name: Github Archive Proxy
+description: Fetches a commit from a github repository archive
+author: https://github.com/arromer
+requirements:
+  - buildkite-agent
+configuration:
+  properties:
+    token_secret:
+      type: string
+    proxy_url:
+      type: string
+public: true
