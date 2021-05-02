@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+log_info() {
+  echo "$(date '+[%Y-%m-%d %H:%M:%S]') INFO: $*"
+}
+
 # Checks if an env var is set
 # Arguments:
 # $1: var name
@@ -34,6 +38,7 @@ main() {
 
   cd "${BUILDKITE_BUILD_CHECKOUT_PATH}/.."
 
+  log_info "Getting token from secrets manager"
   local github_api_token
   github_api_token=$(print_secret "${BUILDKITE_PLUGIN_GITHUB_ARCHIVE_PROXY_TOKEN_SECRET}")
 
@@ -43,11 +48,13 @@ main() {
   local org_repo
   org_repo=$(print_org_repo)
 
+  log_info "Getting commit archive from Github"
   curl -H "Authorization: token ${GITHUB_API_TOKEN}" \
     -H "Accept: application/json" \
     "http://${BUILDKITE_PLUGIN_GITHUB_ARCHIVE_PROXY_PROXY_URL}/repos/${org_repo}/tarball/${BUILDKITE_COMMIT}" \
     --output "${repo_file}"
 
+  log_info "Extracting archive"
   tar -zxf "${repo_file}"
   rm "${repo_file}"
 
@@ -57,6 +64,7 @@ main() {
   mv "${org_repo//\//-}-${BUILDKITE_COMMIT}" "${BUILDKITE_BUILD_CHECKOUT_PATH}"
 
   cd "${BUILDKITE_BUILD_CHECKOUT_PATH}"
+  log_info "Checkout done"
 }
 
 main "$@"
