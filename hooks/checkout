@@ -49,7 +49,7 @@ main() {
   org_repo=$(print_org_repo)
 
   log_info "Getting commit archive from Github"
-  curl -H "Authorization: token ${GITHUB_API_TOKEN}" \
+  curl -H "Authorization: token ${github_api_token}" \
     -H "Accept: application/json" \
     "http://${BUILDKITE_PLUGIN_GITHUB_ARCHIVE_PROXY_PROXY_URL}/repos/${org_repo}/tarball/${BUILDKITE_COMMIT}" \
     --output "${repo_file}"
